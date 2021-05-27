@@ -26,16 +26,33 @@ class App extends React.Component {
             name = pokemon.name;
             abilities = pokemonDetails.data.abilities.map(ability => ability.ability.name);
             image_url = pokemonDetails.data.sprites.other['official-artwork']['front_default'];
-            this.setState({ pokemon: [...this.state.pokemon, { name, abilities, image_url }] }, () => console.log(this.state));
+            this.setState({ pokemon: [...this.state.pokemon, { name, abilities, image_url }] });
           }));
       }));
   }
 
-  addToPokedex = async () => {
+  addToPokedex = async (pokemonObject, callback) => {
     // TODO: send a request to the backend that adds a pokemon to the users Pokedex 
+    if (this.props.auth0.isAuthenticated) {
+      this.props.auth0.getIdTokenClaims()
+        .then(results => {
+          //  We need to use Auth0 to grab the token
+          const token = results.__raw;
 
-    // make sure to get a token from auth0
-    // send JSON data to the Backend that will allow the server to create a new Pokemon.
+          //  Use the token to send a request for profile data
+          const postRequest = {
+            method: 'POST',
+            headers: { Authorization: `Bearer ${token}` },
+            url: 'http://localhost:3001/pokedex',
+            data: pokemonObject
+          }
+
+          axios(postRequest).then(response => {
+            let pokedex = response.data;
+            callback(pokedex);
+          });
+        });
+    }
   }
 
   render() {
@@ -55,7 +72,11 @@ class App extends React.Component {
                 : null}
           </div>
         </Jumbotron>
-        <PokemonList callback={this.addToPokedex} monsters={this.state.pokemon} />
+        <PokemonList
+          callback={this.addToPokedex}
+          pokemonCardButtonText={'Add to Pokedex'}
+          monsters={this.state.pokemon}
+        />
       </div>
     );
   }

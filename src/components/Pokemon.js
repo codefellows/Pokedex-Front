@@ -15,7 +15,16 @@ class Pokemon extends React.Component {
               {ability}
             </Card.Text>
           ))}
-          <Button onClick={this.props.buttonClick} variant="primary">Add to Pokedex</Button>
+          <Button
+            onClick={() => {
+              this.props.buttonClick({
+                name: this.props.name,
+                image_url: this.props.image_url,
+                abilities: this.props.abilities
+              }
+              )
+            }}
+            variant="primary">{this.props.buttonText}</Button>
         </Card.Body>
       </Card>
     )
