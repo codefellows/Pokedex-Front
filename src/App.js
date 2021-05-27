@@ -8,7 +8,7 @@ import PokemonList from './components/PokemonList.js';
 import './App.css';
 
 class App extends React.Component {
-    constructor() {
+  constructor() {
     super();
     this.state = {
       pokemon: [],
@@ -20,19 +20,22 @@ class App extends React.Component {
     let abilities = [];
     let image_url = '';
     axios.get('https://pokeapi.co/api/v2/pokemon')
-    .then(response => response.data.results.forEach(pokemon => {
-      axios.get(pokemon.url)
-      .then((pokemonDetails => {
-        name = pokemon.name;
-        abilities = pokemonDetails.data.abilities.map(ability => ability.ability.name);
-        image_url = pokemonDetails.data.sprites.other['official-artwork']['front_default'];
-        this.setState({ pokemon: [...this.state.pokemon, {name,  abilities, image_url }] }, () => console.log(this.state));
-      }))
-    }))
+      .then(response => response.data.results.forEach(pokemon => {
+        axios.get(pokemon.url)
+          .then((pokemonDetails => {
+            name = pokemon.name;
+            abilities = pokemonDetails.data.abilities.map(ability => ability.ability.name);
+            image_url = pokemonDetails.data.sprites.other['official-artwork']['front_default'];
+            this.setState({ pokemon: [...this.state.pokemon, { name, abilities, image_url }] }, () => console.log(this.state));
+          }));
+      }));
   }
 
   addToPokedex = async () => {
     // TODO: send a request to the backend that adds a pokemon to the users Pokedex 
+
+    // make sure to get a token from auth0
+    // send JSON data to the Backend that will allow the server to create a new Pokemon.
   }
 
   render() {
@@ -45,11 +48,11 @@ class App extends React.Component {
           </p>
           <div>
             <LoginButton variant="primary">Learn more</LoginButton>
-            { this.props.auth0.isAuthenticated
-            ? <Profile />
-            : this.props.auth0.isLoading
-              ? '...loading'
-              : null }
+            {this.props.auth0.isAuthenticated
+              ? <Profile />
+              : this.props.auth0.isLoading
+                ? '...loading'
+                : null}
           </div>
         </Jumbotron>
         <PokemonList callback={this.addToPokedex} monsters={this.state.pokemon} />

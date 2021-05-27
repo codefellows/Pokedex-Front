@@ -23,6 +23,9 @@ class Profile extends React.Component {
 
   removePokemon = () => {
     // TODO: Allow pokemon to be removed from your current pokedex
+
+    // Grabs the users token
+    // configure an HTTP request that will send the token, and an identifier for the pokemon that should be removed.
   }
 
   render() {
@@ -30,7 +33,7 @@ class Profile extends React.Component {
       <Card>
         <Card.Body>
           <Card.Title>{this.state.username}</Card.Title>
-          <PokemonList monsters={this.state.pokedex}/>
+          <PokemonList callback={this.removePokemon} monsters={this.state.pokedex} />
         </Card.Body>
       </Card>
     )
