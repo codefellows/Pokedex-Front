@@ -73,7 +73,7 @@ class App extends React.Component {
           </div>
         </Jumbotron>
         <PokemonList
-          callback={this.addToPokedex}
+          buttonCallback={this.addToPokedex}
           pokemonCardButtonText={'Add to Pokedex'}
           monsters={this.state.pokemon}
         />

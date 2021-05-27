@@ -6,7 +6,7 @@ class PokemonList extends React.Component {
     if (this.props.monsters) {
       return this.props.monsters.map((pokemon => {
         return <Pokemon
-          buttonClick={() => this.props.callback({ name: pokemon.name, image_url: pokemon.image_url, abilities: pokemon.abilities })}
+          buttonClick={() => this.props.buttonCallback({ name: pokemon.name, image_url: pokemon.image_url, abilities: pokemon.abilities })}
           buttonText={this.props.pokemonCardButtonText}
           name={pokemon.name}
           image_url={pokemon.image_url}
